@@ -39,11 +39,7 @@ Este game foi forjado nas seguintes tecnologias:
 
 ## 🚀 Como Ligar os Motores (Jogar Agora!):
 
-1.  **Opção 1: Direto do Cockpit (GitHub Pages)**
-    * Acesse: `https://github.com/Vinicius1708/super-trunfo-veiculos`
-    * Clique em "Iniciar Jogo" e mostre suas habilidades!
-
-2.  **Opção 2: Oficina Local (Download & Play)**
+1.  **Opção 2: Oficina Local (Download & Play)**
     * Faça o download (ou clone) deste repositório.
     * Encontre o arquivo `index.html` (ou o nome que você deu ao arquivo principal).
     * Abra-o no seu navegador favorito (Chromezilla, FirePhoenix, Edgehog - você escolhe!).
