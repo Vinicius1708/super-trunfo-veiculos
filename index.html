@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Trunfo - Veículos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #e2e8f0; /* Light gray border */
+            border-radius: 0.75rem; /* 12px */
+            padding: 1rem; /* 16px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out;
+            width: 280px; /* Fixed width for cards */
+            min-height: 420px; /* Minimum height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0.5rem; /* 8px */
+            margin-bottom: 0.75rem; /* 12px */
+            background-color: #e2e8f0; /* Placeholder bg */
+        }
+        .card-title {
+            font-size: 1.25rem; /* 20px */
+            font-weight: bold;
+            color: #1e293b; /* Darker blue-gray */
+            margin-bottom: 0.5rem; /* 8px */
+            text-align: center;
+        }
+        .card-attribute {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0; /* 8px 0 */
+            font-size: 0.875rem; /* 14px */
+            border-bottom: 1px solid #f1f5f9; /* Very light gray border */
+        }
+        .card-attribute:last-child {
+            border-bottom: none;
+        }
+        .card-attribute .name {
+            color: #475569; /* Medium gray */
+            font-weight: 500;
+        }
+        .card-attribute .value {
+            color: #0f172a; /* Darkest blue-gray */
+            font-weight: 600;
+        }
+        .attribute-button {
+            background-color: #3b82f6; /* Blue */
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem; /* 6px */
+            font-size: 0.875rem; /* 14px */
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+            width: 100%;
+            margin-top: 0.25rem; /* 4px */
+        }
+        .attribute-button:hover {
+            background-color: #2563eb; /* Darker blue */
+        }
+        .attribute-button:disabled {
+            background-color: #9ca3af; /* Gray for disabled */
+            cursor: not-allowed;
+        }
+        .game-message {
+            min-height: 50px;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .info-area {
+            background-color: #e0f2fe; /* Light sky blue */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #bae6fd; /* Sky blue border */
+        }
+        .card-back {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #60a5fa; /* Medium blue */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .trunfo-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #facc15; /* Yellow */
+            color: #713f12; /* Dark yellow/brown */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .special-group-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #a3e635; /* Lime green */
+            color: #3f6212; /* Dark lime */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-5xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-slate-700">Super Trunfo: Veículos</h1>
+        </header>
+
+        <div id="gameArea" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center info-area">
+                <div class="text-center md:text-left">
+                    <h2 class="text-lg font-semibold text-slate-600">Jogador 1</h2>
+                    <p id="player1CardCount" class="text-xl font-bold text-blue-600">Cartas: 0</p>
+                </div>
+                <div class="text-center">
+                    <p id="drawPileCount" class="text-md font-semibold text-slate-500">Monte: 0 cartas</p>
+                    <button id="startGameButton" class="mt-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+                        Iniciar Jogo
+                    </button>
+                </div>
+                <div class="text-center md:text-right">
+                    <h2 class="text-lg font-semibold text-slate-600">Computador</h2>
+                    <p id="computerCardCount" class="text-xl font-bold text-red-600">Cartas: 0</p>
+                </div>
+            </div>
+
+            <div id="messageArea" class="game-message bg-white text-slate-700 shadow rounded-lg">
+                Bem-vindo! Clique em "Iniciar Jogo".
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div id="player1CardArea" class="flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-slate-700 mb-2">Sua Carta</h3>
+                    <div id="player1CardDisplay" class="card">
+                        <div class="flex justify-center items-center h-full text-slate-400">Selecione uma carta</div>
+                    </div>
+                </div>
+
+                <div id="computerCardArea" class="flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-slate-700 mb-2">Carta do Computador</h3>
+                    <div id="computerCardDisplay" class="card card-back">
+                        <span>?</span>
+                    </div>
+                </div>
+            </div>
+             <div id="nextRoundButtonArea" class="text-center mt-6 hidden">
+                <button id="nextRoundButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors">
+                    Próxima Rodada
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Game Data ---
+        const fullDeck = [
+            { name: "Super Trunfo GT", image: "https://placehold.co/300x200/FFD700/000000?text=ST+GT", attributes: { "Velocidade (km/h)": 350, "Potência (HP)": 700, "Cilindrada (cc)": 6000, "Aceleração (0-100s)": 2.8 }, isSuperTrunfo: true, specialGroup: null, id: "ST" },
+            { name: "Esportivo A1", image: "https://placehold.co/300x200/FF6347/FFFFFF?text=A1", attributes: { "Velocidade (km/h)": 320, "Potência (HP)": 600, "Cilindrada (cc)": 5000, "Aceleração (0-100s)": 3.2 }, isSuperTrunfo: false, specialGroup: "A1", id: "A1" },
+            { name: "Sedan B1", image: "https://placehold.co/300x200/ADFF2F/000000?text=B1", attributes: { "Velocidade (km/h)": 250, "Potência (HP)": 300, "Cilindrada (cc)": 3000, "Aceleração (0-100s)": 5.5 }, isSuperTrunfo: false, specialGroup: "B1", id: "B1" },
+            { name: "Hatch C1", image: "https://placehold.co/300x200/87CEFA/000000?text=C1", attributes: { "Velocidade (km/h)": 220, "Potência (HP)": 180, "Cilindrada (cc)": 2000, "Aceleração (0-100s)": 7.0 }, isSuperTrunfo: false, specialGroup: "C1", id: "C1" },
+            { name: "SUV D1", image: "https://placehold.co/300x200/FFB6C1/000000?text=D1", attributes: { "Velocidade (km/h)": 200, "Potência (HP)": 250, "Cilindrada (cc)": 3500, "Aceleração (0-100s)": 6.5 }, isSuperTrunfo: false, specialGroup: "D1", id: "D1" },
+            
+            { name: "Carro de Corrida Alfa", image: "https://placehold.co/300x200/E6E6FA/000000?text=Alfa", attributes: { "Velocidade (km/h)": 330, "Potência (HP)": 650, "Cilindrada (cc)": 5500, "Aceleração (0-100s)": 3.0 }, isSuperTrunfo: false, specialGroup: null, id: "RACE1" },
+            { name: "Muscle Car Beta", image: "https://placehold.co/300x200/DDA0DD/000000?text=Beta", attributes: { "Velocidade (km/h)": 280, "Potência (HP)": 500, "Cilindrada (cc)": 6200, "Aceleração (0-100s)": 4.5 }, isSuperTrunfo: false, specialGroup: null, id: "MUSCLE1" },
+            { name: "Pickup Gamma", image: "https://placehold.co/300x200/B0E0E6/000000?text=Gamma", attributes: { "Velocidade (km/h)": 180, "Potência (HP)": 350, "Cilindrada (cc)": 4000, "Aceleração (0-100s)": 8.0 }, isSuperTrunfo: false, specialGroup: null, id: "PICKUP1" },
+            { name: "Compacto Delta", image: "https://placehold.co/300x200/98FB98/000000?text=Delta", attributes: { "Velocidade (km/h)": 190, "Potência (HP)": 150, "Cilindrada (cc)": 1600, "Aceleração (0-100s)": 9.0 }, isSuperTrunfo: false, specialGroup: null, id: "COMPACT1" },
+            { name: "Van Epsilon", image: "https://placehold.co/300x200/FAFAD2/000000?text=Epsilon", attributes: { "Velocidade (km/h)": 160, "Potência (HP)": 120, "Cilindrada (cc)": 2200, "Aceleração (0-100s)": 12.0 }, isSuperTrunfo: false, specialGroup: null, id: "VAN1" },
+
+            { name: "Moto Esportiva Zeta", image: "https://placehold.co/300x200/F0E68C/000000?text=Zeta+Moto", attributes: { "Velocidade (km/h)": 290, "Potência (HP)": 180, "Cilindrada (cc)": 1000, "Aceleração (0-100s)": 3.5 }, isSuperTrunfo: false, specialGroup: null, id: "MOTO1" },
+            { name: "Caminhão Theta", image: "https://placehold.co/300x200/ADD8E6/000000?text=Theta+Truck", attributes: { "Velocidade (km/h)": 140, "Potência (HP)": 450, "Cilindrada (cc)": 12000, "Aceleração (0-100s)": 20.0 }, isSuperTrunfo: false, specialGroup: null, id: "TRUCK1" },
+            { name: "Ônibus Iota", image: "https://placehold.co/300x200/E0FFFF/000000?text=Iota+Bus", attributes: { "Velocidade (km/h)": 120, "Potência (HP)": 300, "Cilindrada (cc)": 9000, "Aceleração (0-100s)": 25.0 }, isSuperTrunfo: false, specialGroup: null, id: "BUS1" },
+            { name: "Trator Kappa", image: "https://placehold.co/300x200/F5DEB3/000000?text=Kappa+Tractor", attributes: { "Velocidade (km/h)": 50, "Potência (HP)": 100, "Cilindrada (cc)": 3000, "Aceleração (0-100s)": 40.0 }, isSuperTrunfo: false, specialGroup: null, id: "TRACTOR1" },
+            { name: "Fórmula Lambda", image: "https://placehold.co/300x200/FFF0F5/000000?text=Lambda+F1", attributes: { "Velocidade (km/h)": 360, "Potência (HP)": 800, "Cilindrada (cc)": 2400, "Aceleração (0-100s)": 2.5 }, isSuperTrunfo: false, specialGroup: null, id: "F1_1" },
+            { name: "Kart Mu", image: "https://placehold.co/300x200/FFE4E1/000000?text=Mu+Kart", attributes: { "Velocidade (km/h)": 100, "Potência (HP)": 20, "Cilindrada (cc)": 250, "Aceleração (0-100s)": 5.0 }, isSuperTrunfo: false, specialGroup: null, id: "KART1" }
+        ];
+
+        const attributesMeta = {
+            "Velocidade (km/h)": { lowerIsBetter: false },
+            "Potência (HP)": { lowerIsBetter: false },
+            "Cilindrada (cc)": { lowerIsBetter: false },
+            "Aceleração (0-100s)": { lowerIsBetter: true }
+        };
+
+        let player1Hand = [];
+        let computerHand = [];
+        let drawPile = [];
+        let currentPlayer = 'player1'; // Player1 starts
+        let gameActive = false;
+        let roundResolved = false;
+
+
+        // --- DOM Elements ---
+        const player1CardDisplay = document.getElementById('player1CardDisplay');
+        const computerCardDisplay = document.getElementById('computerCardDisplay');
+        const player1CardCountEl = document.getElementById('player1CardCount');
+        const computerCardCountEl = document.getElementById('computerCardCount');
+        const drawPileCountEl = document.getElementById('drawPileCount');
+        const messageArea = document.getElementById('messageArea');
+        const startGameButton = document.getElementById('startGameButton');
+        const nextRoundButtonArea = document.getElementById('nextRoundButtonArea');
+        const nextRoundButton = document.getElementById('nextRoundButton');
+
+        // --- Game Logic Functions ---
+        function shuffleDeck(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        function dealCards() {
+            shuffleDeck(fullDeck);
+            player1Hand = fullDeck.slice(0, Math.ceil(fullDeck.length / 2));
+            computerHand = fullDeck.slice(Math.ceil(fullDeck.length / 2));
+            drawPile = [];
+        }
+
+        function displayCard(card, element, isPlayerCard) {
+            element.innerHTML = ''; // Clear previous content
+            element.classList.remove('card-back');
+
+            const img = document.createElement('img');
+            img.src = card.image;
+            img.alt = card.name;
+            img.className = 'card-image';
+            img.onerror = () => { img.src = 'https://placehold.co/300x200/CCCCCC/FFFFFF?text=Imagem+Indisponível'; };
+            element.appendChild(img);
+
+            const title = document.createElement('h4');
+            title.className = 'card-title';
+            title.textContent = card.name;
+            element.appendChild(title);
+            
+            // Badges
+            const badgeContainer = document.createElement('div');
+            badgeContainer.style.position = 'relative'; // Needed for absolute positioning of badges inside card div
+
+            if (card.isSuperTrunfo) {
+                const trunfoBadge = document.createElement('div');
+                trunfoBadge.className = 'trunfo-badge';
+                trunfoBadge.textContent = 'SUPER TRUNFO';
+                element.appendChild(trunfoBadge); // Append directly to card element for positioning
+            } else if (card.specialGroup) {
+                const specialBadge = document.createElement('div');
+                specialBadge.className = 'special-group-badge';
+                specialBadge.textContent = card.specialGroup;
+                element.appendChild(specialBadge); // Append directly to card element
+            }
+
+
+            const attributesDiv = document.createElement('div');
+            attributesDiv.className = 'flex-grow'; // To push buttons to bottom if card content is short
+
+            Object.entries(card.attributes).forEach(([attrName, attrValue]) => {
+                const attrEl = document.createElement('div');
+                attrEl.className = 'card-attribute';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'name';
+                nameSpan.textContent = attrName;
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'value';
+                valueSpan.textContent = `${attrValue} ${attrName === 'Aceleração (0-100s)' ? 's' : ''}`;
+                if (attributesMeta[attrName].lowerIsBetter) {
+                    valueSpan.textContent += ' (menor é melhor)';
+                }
+
+                attrEl.appendChild(nameSpan);
+                attrEl.appendChild(valueSpan);
+                attributesDiv.appendChild(attrEl);
+
+                if (isPlayerCard && gameActive && currentPlayer === 'player1' && !roundResolved) {
+                    const button = document.createElement('button');
+                    button.className = 'attribute-button';
+                    button.textContent = `Escolher ${attrName}`;
+                    button.onclick = () => handleAttributeSelection(attrName);
+                    attributesDiv.appendChild(button);
+                }
+            });
+            element.appendChild(attributesDiv);
+        }
+        
+        function displayComputerCardBack() {
+            computerCardDisplay.innerHTML = '<span>?</span>';
+            computerCardDisplay.classList.add('card-back');
+        }
+
+        function updateUI() {
+            player1CardCountEl.textContent = `Cartas: ${player1Hand.length}`;
+            computerCardCountEl.textContent = `Cartas: ${computerHand.length}`;
+            drawPileCountEl.textContent = `Monte: ${drawPile.length} cartas`;
+
+            if (player1Hand.length > 0) {
+                displayCard(player1Hand[0], player1CardDisplay, true);
+            } else {
+                player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Sem cartas</div>';
+            }
+
+            if (roundResolved || !gameActive || currentPlayer === 'computer_thinking') { // Show computer card if round resolved or computer's turn outcome
+                 if (computerHand.length > 0) displayCard(computerHand[0], computerCardDisplay, false);
+                 else computerCardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Sem cartas</div>';
+            } else {
+                 displayComputerCardBack();
+            }
+        }
+
+        function handleAttributeSelection(chosenAttribute) {
+            if (!gameActive || currentPlayer !== 'player1' || roundResolved) return;
+            roundResolved = true;
+
+            const pCard = player1Hand[0];
+            const cCard = computerHand[0];
+
+            displayCard(cCard, computerCardDisplay, false); // Reveal computer's card
+
+            let winner = null;
+            let reason = "";
+
+            const pVal = pCard.attributes[chosenAttribute];
+            const cVal = cCard.attributes[chosenAttribute];
+
+            // Super Trunfo Logic
+            if (pCard.isSuperTrunfo && cCard.specialGroup) {
+                winner = 'computer';
+                reason = `${cCard.name} (${cCard.specialGroup}) vence o Super Trunfo ${pCard.name}!`;
+            } else if (cCard.isSuperTrunfo && pCard.specialGroup) {
+                winner = 'player1';
+                reason = `${pCard.name} (${pCard.specialGroup}) vence o Super Trunfo ${cCard.name}!`;
+            } else if (pCard.isSuperTrunfo) {
+                winner = 'player1';
+                reason = `Super Trunfo ${pCard.name} vence!`;
+            } else if (cCard.isSuperTrunfo) {
+                winner = 'computer';
+                reason = `Super Trunfo ${cCard.name} vence!`;
+            } else {
+                // Normal Attribute Comparison
+                const lowerIsBetter = attributesMeta[chosenAttribute].lowerIsBetter;
+                reason = `${chosenAttribute}: ${pCard.name} (${pVal}) vs ${cCard.name} (${cVal}). `;
+
+                if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) {
+                    winner = 'player1';
+                    reason += `${pCard.name} vence a rodada!`;
+                } else if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) {
+                    winner = 'computer';
+                    reason += `${cCard.name} vence a rodada!`;
+                } else {
+                    winner = 'draw';
+                    reason += "Empate!";
+                }
+            }
+            
+            messageArea.textContent = reason;
+            messageArea.className = `game-message p-3 rounded-lg shadow text-center font-semibold ${winner === 'player1' ? 'bg-green-100 text-green-700' : winner === 'computer' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`;
+
+
+            processRoundOutcome(winner, pCard, cCard);
+            updateUI(); // Update counts before checking game over
+
+            if (checkGameOver()) return;
+
+            // Show next round button
+            nextRoundButtonArea.classList.remove('hidden');
+            // Disable attribute buttons on player card (they will be re-enabled on next player turn)
+            if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, true);
+        }
+        
+        function setupNextTurn() {
+            roundResolved = false;
+            nextRoundButtonArea.classList.add('hidden');
+            messageArea.textContent = `É a vez de ${currentPlayer === 'player1' ? 'Você' : 'Computador'}.`;
+            messageArea.className = 'game-message bg-blue-100 text-blue-700';
+
+
+            if (currentPlayer === 'player1') {
+                updateUI(); // This will re-enable buttons if it's player's turn
+            } else { // Computer's turn
+                currentPlayer = 'computer_thinking'; // Intermediate state
+                updateUI(); // Show player card without buttons, computer card still hidden or revealed from previous
+                messageArea.textContent = "Computador está pensando...";
+                setTimeout(computerPlayTurn, 1500); // Simulate thinking
+            }
+        }
+
+        nextRoundButton.addEventListener('click', () => {
+            if (checkGameOver()) return;
+            setupNextTurn();
+        });
+
+
+        function processRoundOutcome(winner, pCard, cCard) {
+            const cardsToTransfer = [pCard, cCard, ...drawPile];
+            drawPile = [];
+
+            player1Hand.shift();
+            computerHand.shift();
+
+            if (winner === 'player1') {
+                player1Hand.push(...cardsToTransfer);
+                currentPlayer = 'player1';
+            } else if (winner === 'computer') {
+                computerHand.push(...cardsToTransfer);
+                currentPlayer = 'computer';
+            } else { // Draw
+                drawPile.push(pCard, cCard); // Original cards go to draw pile
+                // Turn might alternate or stay with current player based on rules. Here, winner of next round gets it.
+                // For simplicity, let's say the turn passes or stays based on who initiated.
+                // If player1 initiated and it's a draw, let computer play next.
+                // If computer initiated and it's a draw, let player1 play next.
+                // For now, the 'currentPlayer' is set by who won. If draw, it remains who was supposed to play.
+                // Let's make it so the turn passes on a draw.
+                currentPlayer = (currentPlayer === 'player1') ? 'computer' : 'player1';
+            }
+        }
+
+        function computerPlayTurn() {
+            if (!gameActive || computerHand.length === 0) return;
+            currentPlayer = 'computer'; // Set current player to computer for logic
+            roundResolved = true; // Computer is making its decision
+
+            const cCard = computerHand[0];
+            const pCard = player1Hand[0]; // Player's card is known to computer for decision
+
+            // AI: Choose the attribute where the computer has the best chance
+            // Simple AI: just picks its best raw attribute.
+            // A slightly better AI would consider player's card if it was "known" (not in this version)
+            // or if there's a Super Trunfo interaction.
+            
+            let bestAttr = null;
+            let bestVal = -Infinity; // For higher is better
+            let worstVal = Infinity; // For lower is better
+
+            // Check for Super Trunfo plays first
+            if (cCard.isSuperTrunfo && !pCard.specialGroup) {
+                // Computer has ST and player doesn't have a counter: play ST
+                // (Computer doesn't "choose" an attribute for ST, it just wins)
+                // For simulation, pick any attribute.
+                bestAttr = Object.keys(cCard.attributes)[0];
+            } else if (pCard.isSuperTrunfo && cCard.specialGroup) {
+                // Player has ST, computer has counter: play counter
+                // (Computer doesn't "choose" an attribute, it just wins)
+                bestAttr = Object.keys(cCard.attributes)[0];
+            } else {
+                 // Standard attribute choice
+                for (const attrName in cCard.attributes) {
+                    const val = cCard.attributes[attrName];
+                    if (attributesMeta[attrName].lowerIsBetter) {
+                        if (val < worstVal) {
+                            worstVal = val;
+                            bestAttr = attrName;
+                        }
+                    } else {
+                        if (val > bestVal) {
+                            bestVal = val;
+                            bestAttr = attrName;
+                        }
+                    }
+                }
+            }
+            if (!bestAttr) bestAttr = Object.keys(cCard.attributes)[0]; // Fallback
+
+            messageArea.textContent = `Computador escolheu: ${bestAttr}`;
+            // Reveal computer's card before showing its choice effect
+            displayCard(cCard, computerCardDisplay, false);
+
+            // Delay slightly before showing full resolution
+            setTimeout(() => {
+                handleAttributeSelectionByComputer(bestAttr);
+            }, 1000);
+        }
+
+        function handleAttributeSelectionByComputer(chosenAttribute) {
+            // This is similar to handleAttributeSelection but initiated by computer
+            // The main difference is that player doesn't click, computer "told" us the attribute
+            const pCard = player1Hand[0];
+            const cCard = computerHand[0];
+
+            // Card is already revealed by computerPlayTurn or updateUI
+            // displayCard(cCard, computerCardDisplay, false); 
+
+            let winner = null;
+            let reason = "";
+
+            const pVal = pCard.attributes[chosenAttribute];
+            const cVal = cCard.attributes[chosenAttribute];
+
+            if (cCard.isSuperTrunfo && pCard.specialGroup) { // Computer plays ST, Player has A1
+                winner = 'player1';
+                reason = `${pCard.name} (${pCard.specialGroup}) vence o Super Trunfo ${cCard.name}!`;
+            } else if (pCard.isSuperTrunfo && cCard.specialGroup) { // Player plays ST, Computer has A1
+                winner = 'computer'; // This case is actually covered by player's turn. But if ST vs A1 happens.
+                reason = `${cCard.name} (${cCard.specialGroup}) vence o Super Trunfo ${pCard.name}!`;
+            } else if (cCard.isSuperTrunfo) {
+                winner = 'computer';
+                reason = `Super Trunfo ${cCard.name} vence!`;
+            } else if (pCard.isSuperTrunfo) {
+                winner = 'player1';
+                reason = `Super Trunfo ${pCard.name} vence!`;
+            } else {
+                const lowerIsBetter = attributesMeta[chosenAttribute].lowerIsBetter;
+                reason = `Computador escolheu ${chosenAttribute}: ${cCard.name} (${cVal}) vs ${pCard.name} (${pVal}). `;
+
+                if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) {
+                    winner = 'computer';
+                    reason += `${cCard.name} vence a rodada!`;
+                } else if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) {
+                    winner = 'player1';
+                    reason += `${pCard.name} vence a rodada!`;
+                } else {
+                    winner = 'draw';
+                    reason += "Empate!";
+                }
+            }
+            
+            messageArea.textContent = reason;
+            messageArea.className = `game-message p-3 rounded-lg shadow text-center font-semibold ${winner === 'player1' ? 'bg-green-100 text-green-700' : winner === 'computer' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`;
+
+
+            processRoundOutcome(winner, pCard, cCard);
+            updateUI();
+
+            if (checkGameOver()) return;
+            
+            nextRoundButtonArea.classList.remove('hidden');
+             // Disable attribute buttons on player card after computer's turn resolution
+            if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, true);
+        }
+
+
+        function checkGameOver() {
+            if (player1Hand.length === 0 && computerHand.length > 0) { // Computer wins if player has 0 and computer has some (including draw pile)
+                messageArea.textContent = "Fim de Jogo! O Computador venceu!";
+                messageArea.className = 'game-message bg-red-500 text-white text-xl p-4 rounded-lg shadow-xl';
+                endGame();
+                return true;
+            } else if (computerHand.length === 0 && player1Hand.length > 0) { // Player wins
+                messageArea.textContent = "Fim de Jogo! Você venceu!";
+                messageArea.className = 'game-message bg-green-500 text-white text-xl p-4 rounded-lg shadow-xl';
+                endGame();
+                return true;
+            } else if (player1Hand.length === 0 && computerHand.length === 0) { // Highly unlikely, but a theoretical draw if all cards end up in draw pile and can't be resolved
+                messageArea.textContent = "Fim de Jogo! Empate técnico (sem cartas para ninguém)!";
+                 messageArea.className = 'game-message bg-yellow-500 text-white text-xl p-4 rounded-lg shadow-xl';
+                endGame();
+                return true;
+            }
+            return false;
+        }
+        
+        function endGame() {
+            gameActive = false;
+            startGameButton.textContent = "Jogar Novamente";
+            startGameButton.classList.remove('hidden');
+            nextRoundButtonArea.classList.add('hidden');
+            // Clear player card buttons
+            if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, false); // Show card without buttons
+            else player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Fim de Jogo</div>';
+            
+            if (computerHand.length > 0) displayCard(computerHand[0], computerCardDisplay, false);
+            else computerCardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Fim de Jogo</div>';
+        }
+
+
+        function startGame() {
+            gameActive = true;
+            roundResolved = false;
+            dealCards();
+            currentPlayer = 'player1'; // Player 1 always starts the game
+            messageArea.textContent = "Jogo iniciado! Sua vez de escolher um atributo.";
+            messageArea.className = 'game-message bg-blue-100 text-blue-700';
+            startGameButton.classList.add('hidden'); // Hide after starting
+            nextRoundButtonArea.classList.add('hidden');
+            updateUI();
+        }
+
+        startGameButton.addEventListener('click', startGame);
+
+        // Initial call to set up the view (though startGame will do most of it)
+        updateUI(); 
+        player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Clique em Iniciar Jogo</div>';
+        displayComputerCardBack();
+
+    </script>
+</body>
+</html>
