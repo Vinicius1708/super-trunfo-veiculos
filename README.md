@@ -49,15 +49,6 @@ Este game foi forjado nas seguintes tecnologias:
     * Abra-o no seu navegador favorito (Chromezilla, FirePhoenix, Edgehog - você escolhe!).
     * Aperte o cinto e "Iniciar Jogo"!
 
-## 🔮 Próximos Patches & DLCs (Ideias para o Futuro):
-
-Quem sabe um dia...
-
-* [ ] Novos Decks Temáticos (Motos Ninjas? Naves Espaciais? Monstros Mitológicos?)
-* [ ] Trilha Sonora Eletrizante para cada duelo!
-* [ ] Animações de "Hadouken" quando a Super Trunfo entra em campo!
-* [ ] Multiplayer Local (Modo "Passa o Controle")?
-
 ## 👑 Desenvolvido Por:
 
 * **Vini Brigadeiro**
