@@ -1,125 +1,121 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Trunfo - Veículos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+<html lang="pt-BR"> <head>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Super Trunfo - Veículos</title> <script src="https://cdn.tailwindcss.com"></script> <style>
+        /* Estilos personalizados adicionais */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
+            font-family: 'Inter', sans-serif; /* Define a fonte padrão do corpo do texto */
+            background-color: #f0f4f8; /* Cor de fundo cinza-azulado claro */
         }
-        .card {
-            background-color: white;
-            border: 1px solid #e2e8f0; /* Light gray border */
-            border-radius: 0.75rem; /* 12px */
-            padding: 1rem; /* 16px */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: transform 0.2s ease-in-out;
-            width: 280px; /* Fixed width for cards */
-            min-height: 420px; /* Minimum height */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .card { /* Estilo base para as cartas do jogo */
+            background-color: white; /* Fundo branco */
+            border: 1px solid #e2e8f0; /* Borda cinza claro */
+            border-radius: 0.75rem; /* Bordas arredondadas (12px) */
+            padding: 1rem; /* Espaçamento interno (16px) */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra suave */
+            transition: transform 0.2s ease-in-out; /* Transição suave para efeito hover */
+            width: 280px; /* Largura fixa para as cartas */
+            min-height: 420px; /* Altura mínima para as cartas */
+            display: flex; /* Habilita flexbox para alinhar conteúdo interno */
+            flex-direction: column; /* Organiza os itens internos em coluna */
+            justify-content: space-between; /* Distribui espaço entre os itens internos */
         }
-        .card:hover {
-            transform: translateY(-5px);
+        .card:hover { /* Efeito ao passar o mouse sobre a carta */
+            transform: translateY(-5px); /* Move a carta levemente para cima */
         }
-        .card-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 0.5rem; /* 8px */
-            margin-bottom: 0.75rem; /* 12px */
-            background-color: #e2e8f0; /* Placeholder bg */
+        .card-image { /* Estilo para a imagem da carta */
+            width: 100%; /* Largura total da área da carta */
+            height: 180px; /* Altura fixa para a imagem */
+            object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+            border-radius: 0.5rem; /* Bordas arredondadas para a imagem (8px) */
+            margin-bottom: 0.75rem; /* Margem inferior (12px) */
+            background-color: #e2e8f0; /* Cor de fundo para placeholder da imagem */
         }
-        .card-title {
-            font-size: 1.25rem; /* 20px */
-            font-weight: bold;
-            color: #1e293b; /* Darker blue-gray */
-            margin-bottom: 0.5rem; /* 8px */
-            text-align: center;
+        .card-title { /* Estilo para o título/nome da carta */
+            font-size: 1.25rem; /* Tamanho da fonte (20px) */
+            font-weight: bold; /* Texto em negrito */
+            color: #1e293b; /* Cor do texto (azul-acinzentado escuro) */
+            margin-bottom: 0.5rem; /* Margem inferior (8px) */
+            text-align: center; /* Centraliza o texto */
         }
-        .card-attribute {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.3rem 0; /* 8px 0 */
-            font-size: 0.875rem; /* 14px */
-            border-bottom: 1px solid #f1f5f9; /* Very light gray border */
+        .card-attribute { /* Estilo para cada linha de atributo na carta */
+            display: flex; /* Habilita flexbox */
+            justify-content: space-between; /* Nome do atributo à esquerda, valor à direita */
+            padding: 0.3rem 0; /* Espaçamento vertical (8px) */
+            font-size: 0.875rem; /* Tamanho da fonte (14px) */
+            border-bottom: 1px solid #f1f5f9; /* Linha divisória cinza muito claro */
         }
-        .card-attribute:last-child {
+        .card-attribute:last-child { /* Remove a linha divisória do último atributo */
             border-bottom: none;
         }
-        .card-attribute .name {
-            color: #475569; /* Medium gray */
-            font-weight: 500;
+        .card-attribute .name { /* Estilo para o nome do atributo */
+            color: #475569; /* Cor cinza médio */
+            font-weight: 500; /* Peso da fonte */
         }
-        .card-attribute .value {
-            color: #0f172a; /* Darkest blue-gray */
-            font-weight: 600;
+        .card-attribute .value { /* Estilo para o valor do atributo */
+            color: #0f172a; /* Cor azul-acinzentado mais escuro */
+            font-weight: 600; /* Peso da fonte (mais forte) */
         }
-        .attribute-button {
-            background-color: #3b82f6; /* Blue */
-            color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem; /* 6px */
-            font-size: 0.875rem; /* 14px */
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border: none;
-            width: 100%;
-            margin-top: 0.25rem; /* 4px */
+        .attribute-button { /* Estilo para os botões de escolha de atributo */
+            background-color: #3b82f6; /* Cor de fundo azul */
+            color: white; /* Texto branco */
+            padding: 0.5rem 0.75rem; /* Espaçamento interno */
+            border-radius: 0.375rem; /* Bordas arredondadas (6px) */
+            font-size: 0.875rem; /* Tamanho da fonte (14px) */
+            font-weight: 500; /* Peso da fonte */
+            cursor: pointer; /* Cursor de mãozinha */
+            transition: background-color 0.2s; /* Transição suave da cor de fundo */
+            border: none; /* Sem borda */
+            width: 100%; /* Largura total */
+            margin-top: 0.25rem; /* Margem superior (4px) */
         }
-        .attribute-button:hover {
-            background-color: #2563eb; /* Darker blue */
+        .attribute-button:hover { /* Efeito ao passar o mouse no botão */
+            background-color: #2563eb; /* Azul mais escuro */
         }
-        .attribute-button:disabled {
-            background-color: #9ca3af; /* Gray for disabled */
-            cursor: not-allowed;
+        .attribute-button:disabled { /* Estilo do botão desabilitado */
+            background-color: #9ca3af; /* Cinza */
+            cursor: not-allowed; /* Cursor de não permitido */
         }
-        .game-message {
-            min-height: 50px;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            font-weight: 500;
+        .game-message { /* Estilo para a área de mensagens do jogo */
+            min-height: 50px; /* Altura mínima */
+            padding: 0.75rem; /* Espaçamento interno */
+            border-radius: 0.5rem; /* Bordas arredondadas */
+            text-align: center; /* Texto centralizado */
+            font-weight: 500; /* Peso da fonte */
         }
-        .info-area {
-            background-color: #e0f2fe; /* Light sky blue */
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            border: 1px solid #bae6fd; /* Sky blue border */
+        .info-area { /* Estilo para a área de informações (contagem de cartas, etc.) */
+            background-color: #e0f2fe; /* Azul céu claro */
+            padding: 0.75rem; /* Espaçamento interno */
+            border-radius: 0.5rem; /* Bordas arredondadas */
+            border: 1px solid #bae6fd; /* Borda azul céu */
         }
-        .card-back {
+        .card-back { /* Estilo para o verso da carta do computador (quando oculta) */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #60a5fa; /* Medium blue */
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
+            background-color: #60a5fa; /* Azul médio */
+            color: white; /* Texto branco */
+            font-size: 1.5rem; /* Tamanho da fonte grande */
+            font-weight: bold; /* Negrito */
         }
-        .trunfo-badge {
-            position: absolute;
+        .trunfo-badge { /* Estilo para o selo "SUPER TRUNFO" */
+            position: absolute; /* Posicionamento absoluto em relação ao pai (.card) */
             top: 10px;
             right: 10px;
-            background-color: #facc15; /* Yellow */
-            color: #713f12; /* Dark yellow/brown */
+            background-color: #facc15; /* Amarelo */
+            color: #713f12; /* Amarelo/marrom escuro */
             padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
             font-size: 0.75rem;
             font-weight: bold;
-            z-index: 10;
+            z-index: 10; /* Para ficar sobre outros elementos da carta */
         }
-        .special-group-badge {
+        .special-group-badge { /* Estilo para o selo de grupo especial (A1, B1, etc.) */
             position: absolute;
             top: 10px;
             left: 10px;
-            background-color: #a3e635; /* Lime green */
-            color: #3f6212; /* Dark lime */
+            background-color: #a3e635; /* Verde lima */
+            color: #3f6212; /* Lima escuro */
             padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
             font-size: 0.75rem;
@@ -128,52 +124,35 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-center p-4"> <div class="w-full max-w-5xl mx-auto">
+        <header class="text-center mb-8"> <h1 class="text-4xl font-bold text-slate-700">Super Trunfo: Veículos</h1> </header>
 
-    <div class="w-full max-w-5xl mx-auto">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-slate-700">Super Trunfo: Veículos</h1>
-        </header>
-
-        <div id="gameArea" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center info-area">
-                <div class="text-center md:text-left">
-                    <h2 class="text-lg font-semibold text-slate-600">Jogador 1</h2>
-                    <p id="player1CardCount" class="text-xl font-bold text-blue-600">Cartas: 0</p>
-                </div>
-                <div class="text-center">
-                    <p id="drawPileCount" class="text-md font-semibold text-slate-500">Monte: 0 cartas</p>
-                    <button id="startGameButton" class="mt-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+        <div id="gameArea" class="space-y-6"> <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center info-area">
+                <div class="text-center md:text-left"> <h2 class="text-lg font-semibold text-slate-600">Jogador 1</h2>
+                    <p id="player1CardCount" class="text-xl font-bold text-blue-600">Cartas: 0</p> </div>
+                <div class="text-center"> <p id="drawPileCount" class="text-md font-semibold text-slate-500">Monte: 0 cartas</p> <button id="startGameButton" class="mt-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
                         Iniciar Jogo
-                    </button>
-                </div>
-                <div class="text-center md:text-right">
-                    <h2 class="text-lg font-semibold text-slate-600">Computador</h2>
-                    <p id="computerCardCount" class="text-xl font-bold text-red-600">Cartas: 0</p>
-                </div>
+                    </button> </div>
+                <div class="text-center md:text-right"> <h2 class="text-lg font-semibold text-slate-600">Computador</h2>
+                    <p id="computerCardCount" class="text-xl font-bold text-red-600">Cartas: 0</p> </div>
             </div>
 
             <div id="messageArea" class="game-message bg-white text-slate-700 shadow rounded-lg">
-                Bem-vindo! Clique em "Iniciar Jogo".
-            </div>
+                Bem-vindo! Clique em "Iniciar Jogo". </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 <div id="player1CardArea" class="flex flex-col items-center">
                     <h3 class="text-xl font-semibold text-slate-700 mb-2">Sua Carta</h3>
-                    <div id="player1CardDisplay" class="card">
-                        <div class="flex justify-center items-center h-full text-slate-400">Selecione uma carta</div>
+                    <div id="player1CardDisplay" class="card"> <div class="flex justify-center items-center h-full text-slate-400">Selecione uma carta</div>
                     </div>
                 </div>
 
                 <div id="computerCardArea" class="flex flex-col items-center">
                     <h3 class="text-xl font-semibold text-slate-700 mb-2">Carta do Computador</h3>
-                    <div id="computerCardDisplay" class="card card-back">
-                        <span>?</span>
-                    </div>
+                    <div id="computerCardDisplay" class="card card-back"> <span>?</span> </div>
                 </div>
             </div>
-             <div id="nextRoundButtonArea" class="text-center mt-6 hidden">
-                <button id="nextRoundButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors">
+             <div id="nextRoundButtonArea" class="text-center mt-6 hidden"> <button id="nextRoundButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors">
                     Próxima Rodada
                 </button>
             </div>
@@ -181,8 +160,9 @@
     </div>
 
     <script>
-        // --- Game Data ---
-        const fullDeck = [
+        // --- Dados do Jogo (Deck de Cartas) ---
+        const fullDeck = [ // Array contendo todas as cartas do jogo
+            // Cada objeto representa uma carta com suas propriedades: nome, imagem, atributos, se é Super Trunfo, grupo especial e ID.
             { name: "Super Trunfo GT", image: "https://placehold.co/300x200/FFD700/000000?text=ST+GT", attributes: { "Velocidade (km/h)": 350, "Potência (HP)": 700, "Cilindrada (cc)": 6000, "Aceleração (0-100s)": 2.8 }, isSuperTrunfo: true, specialGroup: null, id: "ST" },
             { name: "Esportivo A1", image: "https://placehold.co/300x200/FF6347/FFFFFF?text=A1", attributes: { "Velocidade (km/h)": 320, "Potência (HP)": 600, "Cilindrada (cc)": 5000, "Aceleração (0-100s)": 3.2 }, isSuperTrunfo: false, specialGroup: "A1", id: "A1" },
             { name: "Sedan B1", image: "https://placehold.co/300x200/ADFF2F/000000?text=B1", attributes: { "Velocidade (km/h)": 250, "Potência (HP)": 300, "Cilindrada (cc)": 3000, "Aceleração (0-100s)": 5.5 }, isSuperTrunfo: false, specialGroup: "B1", id: "B1" },
@@ -203,93 +183,114 @@
             { name: "Kart Mu", image: "https://placehold.co/300x200/FFE4E1/000000?text=Mu+Kart", attributes: { "Velocidade (km/h)": 100, "Potência (HP)": 20, "Cilindrada (cc)": 250, "Aceleração (0-100s)": 5.0 }, isSuperTrunfo: false, specialGroup: null, id: "KART1" }
         ];
 
+        // Metadados dos atributos: define se um valor menor é melhor para aquele atributo.
         const attributesMeta = {
-            "Velocidade (km/h)": { lowerIsBetter: false },
-            "Potência (HP)": { lowerIsBetter: false },
-            "Cilindrada (cc)": { lowerIsBetter: false },
-            "Aceleração (0-100s)": { lowerIsBetter: true }
+            "Velocidade (km/h)": { lowerIsBetter: false }, // Para velocidade, maior é melhor
+            "Potência (HP)": { lowerIsBetter: false }, // Para potência, maior é melhor
+            "Cilindrada (cc)": { lowerIsBetter: false }, // Para cilindrada, maior é melhor
+            "Aceleração (0-100s)": { lowerIsBetter: true } // Para aceleração, MENOR é melhor
         };
 
-        let player1Hand = [];
-        let computerHand = [];
-        let drawPile = [];
-        let currentPlayer = 'player1'; // Player1 starts
-        let gameActive = false;
-        let roundResolved = false;
+        // --- Variáveis de Estado do Jogo ---
+        let player1Hand = []; // Array para armazenar as cartas na mão do Jogador 1
+        let computerHand = []; // Array para armazenar as cartas na mão do Computador
+        let drawPile = []; // Array para armazenar cartas em caso de empate (monte)
+        let currentPlayer = 'player1'; // String que indica de quem é a vez de jogar ('player1' ou 'computer')
+        let gameActive = false; // Booleano que indica se o jogo está em andamento
+        let roundResolved = false; // Booleano que indica se a rodada atual já foi resolvida (para evitar múltiplos cliques)
 
 
-        // --- DOM Elements ---
-        const player1CardDisplay = document.getElementById('player1CardDisplay');
-        const computerCardDisplay = document.getElementById('computerCardDisplay');
-        const player1CardCountEl = document.getElementById('player1CardCount');
-        const computerCardCountEl = document.getElementById('computerCardCount');
-        const drawPileCountEl = document.getElementById('drawPileCount');
-        const messageArea = document.getElementById('messageArea');
-        const startGameButton = document.getElementById('startGameButton');
-        const nextRoundButtonArea = document.getElementById('nextRoundButtonArea');
-        const nextRoundButton = document.getElementById('nextRoundButton');
+        // --- Referências aos Elementos do DOM (Interface do Usuário) ---
+        const player1CardDisplay = document.getElementById('player1CardDisplay'); // Div onde a carta do Jogador 1 é mostrada
+        const computerCardDisplay = document.getElementById('computerCardDisplay'); // Div onde a carta do Computador é mostrada
+        const player1CardCountEl = document.getElementById('player1CardCount'); // Elemento que mostra a contagem de cartas do Jogador 1
+        const computerCardCountEl = document.getElementById('computerCardCount'); // Elemento que mostra a contagem de cartas do Computador
+        const drawPileCountEl = document.getElementById('drawPileCount'); // Elemento que mostra a contagem de cartas no monte
+        const messageArea = document.getElementById('messageArea'); // Elemento que mostra mensagens do jogo
+        const startGameButton = document.getElementById('startGameButton'); // Botão de Iniciar/Reiniciar Jogo
+        const nextRoundButtonArea = document.getElementById('nextRoundButtonArea'); // Div que contém o botão de Próxima Rodada
+        const nextRoundButton = document.getElementById('nextRoundButton'); // Botão de Próxima Rodada
 
-        // --- Game Logic Functions ---
+        // --- Funções Lógicas do Jogo ---
+
+        /**
+         * Embaralha um array de cartas (deck).
+         * @param {Array} deck - O array de cartas a ser embaralhado.
+         */
         function shuffleDeck(deck) {
+            // Algoritmo de Fisher-Yates para embaralhar
             for (let i = deck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
+                const j = Math.floor(Math.random() * (i + 1)); // Escolhe um índice aleatório
+                [deck[i], deck[j]] = [deck[j], deck[i]]; // Troca os elementos de posição
             }
         }
 
+        /**
+         * Distribui as cartas para os jogadores.
+         * Embaralha o deck principal e divide as cartas entre Jogador 1 e Computador.
+         */
         function dealCards() {
-            shuffleDeck(fullDeck);
+            shuffleDeck(fullDeck); // Embaralha o deck completo
+            // Divide o deck ao meio (aproximadamente, se o número de cartas for ímpar)
             player1Hand = fullDeck.slice(0, Math.ceil(fullDeck.length / 2));
             computerHand = fullDeck.slice(Math.ceil(fullDeck.length / 2));
-            drawPile = [];
+            drawPile = []; // Esvazia o monte de empate
         }
 
+        /**
+         * Exibe uma carta na interface do usuário.
+         * @param {Object} card - O objeto da carta a ser exibida.
+         * @param {HTMLElement} element - O elemento HTML onde a carta será renderizada.
+         * @param {boolean} isPlayerCard - Indica se a carta é do jogador (para adicionar botões de atributo).
+         */
         function displayCard(card, element, isPlayerCard) {
-            element.innerHTML = ''; // Clear previous content
-            element.classList.remove('card-back');
+            element.innerHTML = ''; // Limpa o conteúdo anterior do elemento da carta
+            element.classList.remove('card-back'); // Remove a classe que mostra o verso da carta
 
+            // Cria e adiciona a imagem da carta
             const img = document.createElement('img');
             img.src = card.image;
-            img.alt = card.name;
+            img.alt = card.name; // Texto alternativo para acessibilidade
             img.className = 'card-image';
+            // Fallback caso a imagem não carregue
             img.onerror = () => { img.src = 'https://placehold.co/300x200/CCCCCC/FFFFFF?text=Imagem+Indisponível'; };
             element.appendChild(img);
 
+            // Cria e adiciona o título (nome) da carta
             const title = document.createElement('h4');
             title.className = 'card-title';
             title.textContent = card.name;
             element.appendChild(title);
             
-            // Badges
-            const badgeContainer = document.createElement('div');
-            badgeContainer.style.position = 'relative'; // Needed for absolute positioning of badges inside card div
-
+            // Adiciona selos de Super Trunfo ou Grupo Especial
             if (card.isSuperTrunfo) {
                 const trunfoBadge = document.createElement('div');
                 trunfoBadge.className = 'trunfo-badge';
                 trunfoBadge.textContent = 'SUPER TRUNFO';
-                element.appendChild(trunfoBadge); // Append directly to card element for positioning
+                element.appendChild(trunfoBadge);
             } else if (card.specialGroup) {
                 const specialBadge = document.createElement('div');
                 specialBadge.className = 'special-group-badge';
                 specialBadge.textContent = card.specialGroup;
-                element.appendChild(specialBadge); // Append directly to card element
+                element.appendChild(specialBadge);
             }
 
-
+            // Cria a div para listar os atributos e botões
             const attributesDiv = document.createElement('div');
-            attributesDiv.className = 'flex-grow'; // To push buttons to bottom if card content is short
+            attributesDiv.className = 'flex-grow'; // Para empurrar os botões para baixo se o conteúdo for curto
 
+            // Itera sobre os atributos da carta para exibi-los
             Object.entries(card.attributes).forEach(([attrName, attrValue]) => {
                 const attrEl = document.createElement('div');
                 attrEl.className = 'card-attribute';
                 
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'name';
-                nameSpan.textContent = attrName;
+                nameSpan.textContent = attrName; // Nome do atributo
                 
                 const valueSpan = document.createElement('span');
                 valueSpan.className = 'value';
+                // Formata o valor do atributo (adiciona 's' para aceleração e indicação de 'menor é melhor')
                 valueSpan.textContent = `${attrValue} ${attrName === 'Aceleração (0-100s)' ? 's' : ''}`;
                 if (attributesMeta[attrName].lowerIsBetter) {
                     valueSpan.textContent += ' (menor é melhor)';
@@ -299,186 +300,208 @@
                 attrEl.appendChild(valueSpan);
                 attributesDiv.appendChild(attrEl);
 
+                // Se for a carta do jogador, o jogo estiver ativo, for a vez do jogador e a rodada não estiver resolvida, adiciona botões de escolha
                 if (isPlayerCard && gameActive && currentPlayer === 'player1' && !roundResolved) {
                     const button = document.createElement('button');
                     button.className = 'attribute-button';
                     button.textContent = `Escolher ${attrName}`;
-                    button.onclick = () => handleAttributeSelection(attrName);
+                    button.onclick = () => handleAttributeSelection(attrName); // Define a ação do botão
                     attributesDiv.appendChild(button);
                 }
             });
             element.appendChild(attributesDiv);
         }
         
+        /**
+         * Mostra o verso da carta do computador.
+         */
         function displayComputerCardBack() {
-            computerCardDisplay.innerHTML = '<span>?</span>';
-            computerCardDisplay.classList.add('card-back');
+            computerCardDisplay.innerHTML = '<span>?</span>'; // Mostra um '?'
+            computerCardDisplay.classList.add('card-back'); // Adiciona a classe para estilizar como verso
         }
 
+        /**
+         * Atualiza todos os elementos da interface do usuário com os dados atuais do jogo.
+         * (Contagem de cartas, exibição das cartas atuais, etc.)
+         */
         function updateUI() {
+            // Atualiza a contagem de cartas
             player1CardCountEl.textContent = `Cartas: ${player1Hand.length}`;
             computerCardCountEl.textContent = `Cartas: ${computerHand.length}`;
             drawPileCountEl.textContent = `Monte: ${drawPile.length} cartas`;
 
+            // Exibe a carta do topo do Jogador 1 (se houver)
             if (player1Hand.length > 0) {
-                displayCard(player1Hand[0], player1CardDisplay, true);
+                displayCard(player1Hand[0], player1CardDisplay, true); // true para isPlayerCard
             } else {
+                // Se não tiver cartas, mostra mensagem
                 player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Sem cartas</div>';
             }
 
-            if (roundResolved || !gameActive || currentPlayer === 'computer_thinking') { // Show computer card if round resolved or computer's turn outcome
-                 if (computerHand.length > 0) displayCard(computerHand[0], computerCardDisplay, false);
+            // Lógica para exibir a carta do computador:
+            // Mostra a carta se a rodada foi resolvida, ou se o jogo não está ativo, ou se o computador está "pensando" (para mostrar o resultado).
+            if (roundResolved || !gameActive || currentPlayer === 'computer_thinking') {
+                 if (computerHand.length > 0) displayCard(computerHand[0], computerCardDisplay, false); // false para isPlayerCard
                  else computerCardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Sem cartas</div>';
             } else {
-                 displayComputerCardBack();
+                 displayComputerCardBack(); // Caso contrário, mostra o verso
             }
         }
 
+        /**
+         * Lida com a seleção de um atributo pelo Jogador 1.
+         * @param {string} chosenAttribute - O nome do atributo escolhido pelo jogador.
+         */
         function handleAttributeSelection(chosenAttribute) {
+            // Impede a função de rodar se não for a vez do jogador, o jogo não estiver ativo ou a rodada já foi resolvida
             if (!gameActive || currentPlayer !== 'player1' || roundResolved) return;
-            roundResolved = true;
+            roundResolved = true; // Marca a rodada como resolvida
 
-            const pCard = player1Hand[0];
-            const cCard = computerHand[0];
+            const pCard = player1Hand[0]; // Carta do Jogador 1
+            const cCard = computerHand[0]; // Carta do Computador
 
-            displayCard(cCard, computerCardDisplay, false); // Reveal computer's card
+            displayCard(cCard, computerCardDisplay, false); // Revela a carta do Computador
 
-            let winner = null;
-            let reason = "";
+            let winner = null; // 'player1', 'computer', ou 'draw'
+            let reason = ""; // Mensagem explicando o resultado da rodada
 
-            const pVal = pCard.attributes[chosenAttribute];
-            const cVal = cCard.attributes[chosenAttribute];
+            const pVal = pCard.attributes[chosenAttribute]; // Valor do atributo do Jogador 1
+            const cVal = cCard.attributes[chosenAttribute]; // Valor do atributo do Computador
 
-            // Super Trunfo Logic
-            if (pCard.isSuperTrunfo && cCard.specialGroup) {
+            // Lógica de Super Trunfo e Cartas Especiais (A1, B1, etc.)
+            if (pCard.isSuperTrunfo && cCard.specialGroup) { // Jogador tem ST, Computador tem carta especial (A1, etc.)
                 winner = 'computer';
                 reason = `${cCard.name} (${cCard.specialGroup}) vence o Super Trunfo ${pCard.name}!`;
-            } else if (cCard.isSuperTrunfo && pCard.specialGroup) {
+            } else if (cCard.isSuperTrunfo && pCard.specialGroup) { // Computador tem ST, Jogador tem carta especial
                 winner = 'player1';
                 reason = `${pCard.name} (${pCard.specialGroup}) vence o Super Trunfo ${cCard.name}!`;
-            } else if (pCard.isSuperTrunfo) {
+            } else if (pCard.isSuperTrunfo) { // Jogador tem ST (e computador não tem carta especial)
                 winner = 'player1';
                 reason = `Super Trunfo ${pCard.name} vence!`;
-            } else if (cCard.isSuperTrunfo) {
+            } else if (cCard.isSuperTrunfo) { // Computador tem ST (e jogador não tem carta especial)
                 winner = 'computer';
                 reason = `Super Trunfo ${cCard.name} vence!`;
             } else {
-                // Normal Attribute Comparison
-                const lowerIsBetter = attributesMeta[chosenAttribute].lowerIsBetter;
+                // Comparação normal de atributos
+                const lowerIsBetter = attributesMeta[chosenAttribute].lowerIsBetter; // Verifica se menor é melhor para este atributo
                 reason = `${chosenAttribute}: ${pCard.name} (${pVal}) vs ${cCard.name} (${cVal}). `;
 
-                if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) {
+                if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) { // Jogador 1 ganha
                     winner = 'player1';
                     reason += `${pCard.name} vence a rodada!`;
-                } else if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) {
+                } else if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) { // Computador ganha
                     winner = 'computer';
                     reason += `${cCard.name} vence a rodada!`;
-                } else {
+                } else { // Empate
                     winner = 'draw';
                     reason += "Empate!";
                 }
             }
             
+            // Exibe a mensagem do resultado da rodada
             messageArea.textContent = reason;
+            // Estiliza a mensagem de acordo com o vencedor
             messageArea.className = `game-message p-3 rounded-lg shadow text-center font-semibold ${winner === 'player1' ? 'bg-green-100 text-green-700' : winner === 'computer' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`;
 
+            processRoundOutcome(winner, pCard, cCard); // Processa o resultado (transferência de cartas)
+            updateUI(); // Atualiza a interface
 
-            processRoundOutcome(winner, pCard, cCard);
-            updateUI(); // Update counts before checking game over
+            if (checkGameOver()) return; // Verifica se o jogo terminou
 
-            if (checkGameOver()) return;
-
-            // Show next round button
+            // Mostra o botão de "Próxima Rodada"
             nextRoundButtonArea.classList.remove('hidden');
-            // Disable attribute buttons on player card (they will be re-enabled on next player turn)
+            // Atualiza a carta do jogador para desabilitar os botões (já que a rodada foi resolvida)
             if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, true);
         }
         
+        /**
+         * Configura o jogo para a próxima rodada ou próximo turno.
+         */
         function setupNextTurn() {
-            roundResolved = false;
-            nextRoundButtonArea.classList.add('hidden');
+            roundResolved = false; // Reseta o estado da rodada
+            nextRoundButtonArea.classList.add('hidden'); // Esconde o botão de "Próxima Rodada"
+            // Define a mensagem para o próximo turno
             messageArea.textContent = `É a vez de ${currentPlayer === 'player1' ? 'Você' : 'Computador'}.`;
             messageArea.className = 'game-message bg-blue-100 text-blue-700';
 
 
             if (currentPlayer === 'player1') {
-                updateUI(); // This will re-enable buttons if it's player's turn
-            } else { // Computer's turn
-                currentPlayer = 'computer_thinking'; // Intermediate state
-                updateUI(); // Show player card without buttons, computer card still hidden or revealed from previous
+                updateUI(); // Se for a vez do jogador, atualiza a UI (que reabilitará os botões)
+            } else { // Se for a vez do Computador
+                currentPlayer = 'computer_thinking'; // Estado intermediário para mostrar que o computador está "pensando"
+                updateUI(); // Atualiza a UI (carta do jogador sem botões, carta do computador ainda oculta ou como estava)
                 messageArea.textContent = "Computador está pensando...";
-                setTimeout(computerPlayTurn, 1500); // Simulate thinking
+                setTimeout(computerPlayTurn, 1500); // Simula o "pensamento" do computador com um atraso
             }
         }
 
+        // Adiciona o listener para o botão de "Próxima Rodada"
         nextRoundButton.addEventListener('click', () => {
-            if (checkGameOver()) return;
-            setupNextTurn();
+            if (checkGameOver()) return; // Se o jogo acabou, não faz nada
+            setupNextTurn(); // Configura o próximo turno
         });
 
-
+        /**
+         * Processa o resultado da rodada, transferindo cartas.
+         * @param {string} winner - Quem venceu a rodada ('player1', 'computer', 'draw').
+         * @param {Object} pCard - A carta do Jogador 1 na rodada.
+         * @param {Object} cCard - A carta do Computador na rodada.
+         */
         function processRoundOutcome(winner, pCard, cCard) {
+            // Coleta as cartas da rodada (as duas jogadas + as do monte de empate, se houver)
             const cardsToTransfer = [pCard, cCard, ...drawPile];
-            drawPile = [];
+            drawPile = []; // Esvazia o monte
 
-            player1Hand.shift();
-            computerHand.shift();
+            // Remove as cartas jogadas das mãos dos jogadores
+            player1Hand.shift(); // Remove a primeira carta da mão do Jogador 1
+            computerHand.shift(); // Remove a primeira carta da mão do Computador
 
             if (winner === 'player1') {
-                player1Hand.push(...cardsToTransfer);
-                currentPlayer = 'player1';
+                player1Hand.push(...cardsToTransfer); // Adiciona as cartas ganhas ao final da mão do Jogador 1
+                currentPlayer = 'player1'; // Jogador 1 joga novamente
             } else if (winner === 'computer') {
-                computerHand.push(...cardsToTransfer);
-                currentPlayer = 'computer';
-            } else { // Draw
-                drawPile.push(pCard, cCard); // Original cards go to draw pile
-                // Turn might alternate or stay with current player based on rules. Here, winner of next round gets it.
-                // For simplicity, let's say the turn passes or stays based on who initiated.
-                // If player1 initiated and it's a draw, let computer play next.
-                // If computer initiated and it's a draw, let player1 play next.
-                // For now, the 'currentPlayer' is set by who won. If draw, it remains who was supposed to play.
-                // Let's make it so the turn passes on a draw.
+                computerHand.push(...cardsToTransfer); // Adiciona as cartas ganhas ao final da mão do Computador
+                currentPlayer = 'computer'; // Computador joga novamente
+            } else { // Empate
+                drawPile.push(pCard, cCard); // As cartas da rodada vão para o monte de empate
+                // A vez de jogar passa para o outro jogador em caso de empate
                 currentPlayer = (currentPlayer === 'player1') ? 'computer' : 'player1';
             }
         }
 
+        /**
+         * Simula a jogada do computador.
+         * O computador escolhe um atributo para jogar.
+         */
         function computerPlayTurn() {
+            // Se o jogo não está ativo ou o computador não tem cartas, não faz nada
             if (!gameActive || computerHand.length === 0) return;
-            currentPlayer = 'computer'; // Set current player to computer for logic
-            roundResolved = true; // Computer is making its decision
+            currentPlayer = 'computer'; // Define que é a vez do computador
+            roundResolved = true; // Marca que o computador está fazendo sua decisão
 
-            const cCard = computerHand[0];
-            const pCard = player1Hand[0]; // Player's card is known to computer for decision
+            const cCard = computerHand[0]; // Carta do Computador
+            const pCard = player1Hand[0]; // Carta do Jogador 1 (o computador "vê" para tomar decisão)
 
-            // AI: Choose the attribute where the computer has the best chance
-            // Simple AI: just picks its best raw attribute.
-            // A slightly better AI would consider player's card if it was "known" (not in this version)
-            // or if there's a Super Trunfo interaction.
-            
-            let bestAttr = null;
-            let bestVal = -Infinity; // For higher is better
-            let worstVal = Infinity; // For lower is better
+            let bestAttr = null; // Melhor atributo para o computador jogar
+            let bestVal = -Infinity; // Para atributos onde maior é melhor
+            let worstVal = Infinity; // Para atributos onde menor é melhor
 
-            // Check for Super Trunfo plays first
-            if (cCard.isSuperTrunfo && !pCard.specialGroup) {
-                // Computer has ST and player doesn't have a counter: play ST
-                // (Computer doesn't "choose" an attribute for ST, it just wins)
-                // For simulation, pick any attribute.
-                bestAttr = Object.keys(cCard.attributes)[0];
-            } else if (pCard.isSuperTrunfo && cCard.specialGroup) {
-                // Player has ST, computer has counter: play counter
-                // (Computer doesn't "choose" an attribute, it just wins)
-                bestAttr = Object.keys(cCard.attributes)[0];
+            // Lógica de IA simples para o computador:
+            // 1. Prioriza jogadas com Super Trunfo ou contra Super Trunfo.
+            if (cCard.isSuperTrunfo && !pCard.specialGroup) { // Computador tem ST e jogador não tem contra-ataque
+                bestAttr = Object.keys(cCard.attributes)[0]; // Escolhe qualquer atributo, pois ST ganha
+            } else if (pCard.isSuperTrunfo && cCard.specialGroup) { // Jogador tem ST, computador tem contra-ataque
+                bestAttr = Object.keys(cCard.attributes)[0]; // Escolhe qualquer atributo, pois a carta especial ganha
             } else {
-                 // Standard attribute choice
+                 // 2. Se não houver jogada de ST, escolhe o atributo onde tem o melhor valor bruto.
                 for (const attrName in cCard.attributes) {
                     const val = cCard.attributes[attrName];
-                    if (attributesMeta[attrName].lowerIsBetter) {
+                    if (attributesMeta[attrName].lowerIsBetter) { // Se menor for melhor
                         if (val < worstVal) {
                             worstVal = val;
                             bestAttr = attrName;
                         }
-                    } else {
+                    } else { // Se maior for melhor
                         if (val > bestVal) {
                             bestVal = val;
                             bestAttr = attrName;
@@ -486,26 +509,26 @@
                     }
                 }
             }
-            if (!bestAttr) bestAttr = Object.keys(cCard.attributes)[0]; // Fallback
+            if (!bestAttr) bestAttr = Object.keys(cCard.attributes)[0]; // Fallback: se nenhum atributo for escolhido, pega o primeiro
 
             messageArea.textContent = `Computador escolheu: ${bestAttr}`;
-            // Reveal computer's card before showing its choice effect
-            displayCard(cCard, computerCardDisplay, false);
+            displayCard(cCard, computerCardDisplay, false); // Revela a carta do computador
 
-            // Delay slightly before showing full resolution
+            // Pequeno atraso para o jogador ver a escolha do computador antes da resolução completa
             setTimeout(() => {
-                handleAttributeSelectionByComputer(bestAttr);
+                handleAttributeSelectionByComputer(bestAttr); // Chama a função que processa a escolha do computador
             }, 1000);
         }
 
+        /**
+         * Lida com a seleção de atributo feita pelo computador (similar a handleAttributeSelection).
+         * @param {string} chosenAttribute - O atributo escolhido pelo computador.
+         */
         function handleAttributeSelectionByComputer(chosenAttribute) {
-            // This is similar to handleAttributeSelection but initiated by computer
-            // The main difference is that player doesn't click, computer "told" us the attribute
             const pCard = player1Hand[0];
             const cCard = computerHand[0];
 
-            // Card is already revealed by computerPlayTurn or updateUI
-            // displayCard(cCard, computerCardDisplay, false); 
+            // A carta do computador já foi revelada em computerPlayTurn
 
             let winner = null;
             let reason = "";
@@ -513,29 +536,31 @@
             const pVal = pCard.attributes[chosenAttribute];
             const cVal = cCard.attributes[chosenAttribute];
 
-            if (cCard.isSuperTrunfo && pCard.specialGroup) { // Computer plays ST, Player has A1
-                winner = 'player1';
+            // Lógica de Super Trunfo e Cartas Especiais (repetida para garantir consistência)
+            if (cCard.isSuperTrunfo && pCard.specialGroup) {
+                winner = 'player1'; // Jogador vence com carta especial contra ST do computador
                 reason = `${pCard.name} (${pCard.specialGroup}) vence o Super Trunfo ${cCard.name}!`;
-            } else if (pCard.isSuperTrunfo && cCard.specialGroup) { // Player plays ST, Computer has A1
-                winner = 'computer'; // This case is actually covered by player's turn. But if ST vs A1 happens.
+            } else if (pCard.isSuperTrunfo && cCard.specialGroup) {
+                winner = 'computer'; // Computador vence com carta especial contra ST do jogador
                 reason = `${cCard.name} (${cCard.specialGroup}) vence o Super Trunfo ${pCard.name}!`;
-            } else if (cCard.isSuperTrunfo) {
+            } else if (cCard.isSuperTrunfo) { // Computador tem ST
                 winner = 'computer';
                 reason = `Super Trunfo ${cCard.name} vence!`;
-            } else if (pCard.isSuperTrunfo) {
+            } else if (pCard.isSuperTrunfo) { // Jogador tem ST
                 winner = 'player1';
                 reason = `Super Trunfo ${pCard.name} vence!`;
             } else {
+                // Comparação normal de atributos
                 const lowerIsBetter = attributesMeta[chosenAttribute].lowerIsBetter;
                 reason = `Computador escolheu ${chosenAttribute}: ${cCard.name} (${cVal}) vs ${pCard.name} (${pVal}). `;
 
-                if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) {
+                if ((!lowerIsBetter && cVal > pVal) || (lowerIsBetter && cVal < pVal)) { // Computador ganha
                     winner = 'computer';
                     reason += `${cCard.name} vence a rodada!`;
-                } else if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) {
+                } else if ((!lowerIsBetter && pVal > cVal) || (lowerIsBetter && pVal < cVal)) { // Jogador ganha
                     winner = 'player1';
                     reason += `${pCard.name} vence a rodada!`;
-                } else {
+                } else { // Empate
                     winner = 'draw';
                     reason += "Empate!";
                 }
@@ -544,70 +569,81 @@
             messageArea.textContent = reason;
             messageArea.className = `game-message p-3 rounded-lg shadow text-center font-semibold ${winner === 'player1' ? 'bg-green-100 text-green-700' : winner === 'computer' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`;
 
-
             processRoundOutcome(winner, pCard, cCard);
             updateUI();
 
             if (checkGameOver()) return;
             
-            nextRoundButtonArea.classList.remove('hidden');
-             // Disable attribute buttons on player card after computer's turn resolution
+            nextRoundButtonArea.classList.remove('hidden'); // Mostra botão de próxima rodada
+            // Atualiza a carta do jogador para desabilitar os botões, pois a vez agora é do jogador de clicar "Próxima Rodada"
             if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, true);
         }
 
-
+        /**
+         * Verifica se o jogo terminou (se algum jogador ficou sem cartas).
+         * @returns {boolean} True se o jogo terminou, False caso contrário.
+         */
         function checkGameOver() {
-            if (player1Hand.length === 0 && computerHand.length > 0) { // Computer wins if player has 0 and computer has some (including draw pile)
+            if (player1Hand.length === 0 && computerHand.length > 0) { // Computador vence
                 messageArea.textContent = "Fim de Jogo! O Computador venceu!";
                 messageArea.className = 'game-message bg-red-500 text-white text-xl p-4 rounded-lg shadow-xl';
                 endGame();
                 return true;
-            } else if (computerHand.length === 0 && player1Hand.length > 0) { // Player wins
+            } else if (computerHand.length === 0 && player1Hand.length > 0) { // Jogador 1 vence
                 messageArea.textContent = "Fim de Jogo! Você venceu!";
                 messageArea.className = 'game-message bg-green-500 text-white text-xl p-4 rounded-lg shadow-xl';
                 endGame();
                 return true;
-            } else if (player1Hand.length === 0 && computerHand.length === 0) { // Highly unlikely, but a theoretical draw if all cards end up in draw pile and can't be resolved
+            } else if (player1Hand.length === 0 && computerHand.length === 0) { // Empate técnico (improvável)
                 messageArea.textContent = "Fim de Jogo! Empate técnico (sem cartas para ninguém)!";
                  messageArea.className = 'game-message bg-yellow-500 text-white text-xl p-4 rounded-lg shadow-xl';
                 endGame();
                 return true;
             }
-            return false;
+            return false; // Jogo continua
         }
         
+        /**
+         * Finaliza o jogo, atualizando a UI para o estado de fim de jogo.
+         */
         function endGame() {
-            gameActive = false;
-            startGameButton.textContent = "Jogar Novamente";
-            startGameButton.classList.remove('hidden');
-            nextRoundButtonArea.classList.add('hidden');
-            // Clear player card buttons
-            if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, false); // Show card without buttons
+            gameActive = false; // Marca o jogo como inativo
+            startGameButton.textContent = "Jogar Novamente"; // Muda o texto do botão
+            startGameButton.classList.remove('hidden'); // Mostra o botão de jogar novamente
+            nextRoundButtonArea.classList.add('hidden'); // Esconde o botão de próxima rodada
+
+            // Limpa os botões da carta do jogador (mostra a carta sem botões)
+            if (player1Hand.length > 0) displayCard(player1Hand[0], player1CardDisplay, false); 
             else player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Fim de Jogo</div>';
             
+            // Mostra a carta final do computador (se houver)
             if (computerHand.length > 0) displayCard(computerHand[0], computerCardDisplay, false);
             else computerCardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Fim de Jogo</div>';
         }
 
-
+        /**
+         * Inicia um novo jogo.
+         * Reseta o estado do jogo, distribui as cartas e atualiza a UI.
+         */
         function startGame() {
-            gameActive = true;
-            roundResolved = false;
-            dealCards();
-            currentPlayer = 'player1'; // Player 1 always starts the game
+            gameActive = true; // Marca o jogo como ativo
+            roundResolved = false; // Reseta o estado da rodada
+            dealCards(); // Distribui as cartas
+            currentPlayer = 'player1'; // Jogador 1 sempre começa
             messageArea.textContent = "Jogo iniciado! Sua vez de escolher um atributo.";
             messageArea.className = 'game-message bg-blue-100 text-blue-700';
-            startGameButton.classList.add('hidden'); // Hide after starting
-            nextRoundButtonArea.classList.add('hidden');
-            updateUI();
+            startGameButton.classList.add('hidden'); // Esconde o botão de iniciar após o início
+            nextRoundButtonArea.classList.add('hidden'); // Garante que o botão de próxima rodada está oculto
+            updateUI(); // Atualiza a interface
         }
 
+        // Adiciona o listener para o botão de "Iniciar Jogo"
         startGameButton.addEventListener('click', startGame);
 
-        // Initial call to set up the view (though startGame will do most of it)
+        // Chamada inicial para configurar a visualização (antes do jogo começar)
         updateUI(); 
         player1CardDisplay.innerHTML = '<div class="flex justify-center items-center h-full text-slate-400">Clique em Iniciar Jogo</div>';
-        displayComputerCardBack();
+        displayComputerCardBack(); // Mostra o verso da carta do computador inicialmente
 
     </script>
 </body>
